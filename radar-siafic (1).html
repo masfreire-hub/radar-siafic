@@ -1,0 +1,2143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+  <!-- PWA: Manifest inline via JS blob -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Radar Siafic">
+  <meta name="application-name" content="Radar Siafic">
+  <meta name="theme-color" content="#0B1829">
+  <meta name="description" content="Inteligência Fiscal Municipal — Radar Siafic">
+
+  <!-- Inject manifest dynamically (single-file PWA) -->
+  <script>
+    const manifest = {
+      name: "Radar Siafic",
+      short_name: "Radar Siafic",
+      description: "Inteligência Fiscal Municipal",
+      start_url: "./",
+      display: "standalone",
+      background_color: "#0B1829",
+      theme_color: "#0B1829",
+      orientation: "portrait",
+      icons: [
+        {
+          src: "data:image/svg+xml," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%230B1829'/><rect x='20' y='20' width='152' height='152' rx='28' fill='%231E5CB3'/><text x='96' y='125' font-size='90' text-anchor='middle' fill='white'>📡</text></svg>`),
+          sizes: "192x192",
+          type: "image/svg+xml",
+          purpose: "any maskable"
+        },
+        {
+          src: "data:image/svg+xml," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%230B1829'/><rect x='40' y='40' width='432' height='432' rx='70' fill='%231E5CB3'/><text x='256' y='340' font-size='240' text-anchor='middle' fill='white'>📡</text></svg>`),
+          sizes: "512x512",
+          type: "image/svg+xml",
+          purpose: "any maskable"
+        }
+      ]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], {type: 'application/manifest+json'});
+    const link = document.createElement('link');
+    link.rel = 'manifest';
+    link.href = URL.createObjectURL(blob);
+    document.head.appendChild(link);
+  </script>
+
+  <!-- Apple touch icon inline SVG -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%20180%20180'%3E%3Crect%20width%3D'180'%20height%3D'180'%20rx%3D'40'%20fill%3D'%230B1829'%2F%3E%3Crect%20x%3D'15'%20y%3D'15'%20width%3D'150'%20height%3D'150'%20rx%3D'28'%20fill%3D'%231E5CB3'%2F%3E%3Ctext%20x%3D'90'%20y%3D'118'%20font-size%3D'85'%20text-anchor%3D'middle'%3E%F0%9F%93%A1%3C%2Ftext%3E%3C%2Fsvg%3E">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Radar Siafic</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0B1829;
+    --navy-mid: #102035;
+    --navy-light: #1A3050;
+    --blue: #1E5CB3;
+    --blue-bright: #2E80FF;
+    --teal: #0ABFA3;
+    --teal-dim: rgba(10,191,163,0.15);
+    --amber: #F59E0B;
+    --red: #EF4444;
+    --green: #10B981;
+    --text-primary: #F0F4FF;
+    --text-secondary: #7E9AB5;
+    --text-muted: #4A6580;
+    --card: rgba(16,32,53,0.95);
+    --card-border: rgba(46,128,255,0.12);
+    --card-hover: rgba(30,50,80,0.9);
+    --glow: rgba(46,128,255,0.15);
+    --font: 'DM Sans', sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--navy);
+    color: var(--text-primary);
+    font-family: var(--font);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Responsive layout */
+  .phone-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--navy);
+  }
+
+  .phone-frame {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--navy);
+  }
+
+  @media (min-width: 600px) {
+    .phone-wrapper {
+      background: #06101C;
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(30,92,179,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(10,191,163,0.08) 0%, transparent 50%);
+      padding: 24px 0;
+      align-items: center;
+    }
+    .phone-frame {
+      min-height: calc(100vh - 48px);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(46,128,255,0.1);
+    }
+  }
+
+  /* Status bar */
+  .status-bar {
+    padding: 14px 24px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex-shrink: 0;
+  }
+  @media (min-width: 600px) {
+    .status-bar { display: none; }
+  }
+
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+
+  /* Header */
+  .app-header {
+    padding: 4px 20px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .logo-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 34px;
+    height: 34px;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logo-name {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    line-height: 1;
+  }
+
+  .logo-sub {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--teal);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .header-actions { display: flex; gap: 10px; }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .alert-badge {
+    position: relative;
+  }
+  .alert-badge::after {
+    content: '3';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--red);
+    color: white;
+    font-size: 8px;
+    font-weight: 700;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--navy);
+  }
+
+  /* Scrollable content */
+  .scroll-content {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 16px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(46,128,255,0.2) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+  .scroll-content::-webkit-scrollbar { width: 4px; }
+  .scroll-content::-webkit-scrollbar-track { background: transparent; }
+  .scroll-content::-webkit-scrollbar-thumb { background: rgba(46,128,255,0.2); border-radius: 2px; }
+
+  /* Sections */
+  .section { margin-bottom: 20px; }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  .section-action {
+    font-size: 11px;
+    color: var(--blue-bright);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  /* Municipality chip */
+  .muni-chip {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .muni-info { display: flex; flex-direction: column; }
+  .muni-name { font-size: 13px; font-weight: 600; }
+  .muni-meta { font-size: 10px; color: var(--text-secondary); margin-top: 1px; }
+  .muni-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--teal);
+    font-weight: 500;
+  }
+  .live-dot {
+    width: 6px; height: 6px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  /* KPI Row */
+  .kpi-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 14px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .kpi-card.green::before { background: linear-gradient(90deg, transparent, var(--green), transparent); }
+  .kpi-card.amber::before { background: linear-gradient(90deg, transparent, var(--amber), transparent); }
+  .kpi-card.red::before { background: linear-gradient(90deg, transparent, var(--red), transparent); }
+  .kpi-card.blue::before { background: linear-gradient(90deg, transparent, var(--blue-bright), transparent); }
+
+  .kpi-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+  }
+
+  .kpi-value {
+    font-size: 17px;
+    font-weight: 700;
+    font-family: var(--mono);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-sub {
+    font-size: 10px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .kpi-trend {
+    font-size: 9px;
+    font-weight: 600;
+    padding: 2px 5px;
+    border-radius: 4px;
+  }
+
+  .kpi-trend.up { background: rgba(16,185,129,0.15); color: var(--green); }
+  .kpi-trend.down { background: rgba(239,68,68,0.15); color: var(--red); }
+  .kpi-trend.neutral { background: rgba(245,158,11,0.15); color: var(--amber); }
+
+  /* Wide card */
+  .kpi-card-wide {
+    grid-column: 1 / -1;
+  }
+
+  /* Result card */
+  .result-card {
+    background: linear-gradient(135deg, rgba(10,191,163,0.1), rgba(30,92,179,0.15));
+    border: 1px solid rgba(10,191,163,0.2);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .result-label { font-size: 10px; color: var(--teal); font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; }
+  .result-value { font-size: 20px; font-weight: 700; font-family: var(--mono); color: var(--teal); margin-top: 2px; }
+  .result-badge {
+    background: rgba(10,191,163,0.15);
+    border: 1px solid rgba(10,191,163,0.3);
+    color: var(--teal);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+
+  /* Progress bars */
+  .progress-section {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .progress-item { margin-bottom: 12px; }
+  .progress-item:last-child { margin-bottom: 0; }
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .progress-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); }
+  .progress-pct { font-size: 12px; font-weight: 700; font-family: var(--mono); }
+
+  .progress-track {
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .limit-marker {
+    position: absolute;
+    top: -2px;
+    width: 2px;
+    height: 10px;
+    background: var(--red);
+    border-radius: 1px;
+    opacity: 0.7;
+  }
+
+  /* LRF Gauge */
+  .gauge-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+
+  .gauge-wrap { flex-shrink: 0; }
+
+  svg.gauge {
+    width: 90px;
+    height: 56px;
+    overflow: visible;
+  }
+
+  .gauge-info { flex: 1; }
+  .gauge-title { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 4px; }
+  .gauge-value { font-size: 22px; font-weight: 700; font-family: var(--mono); }
+  .gauge-sub { font-size: 10px; color: var(--amber); font-weight: 500; margin-top: 2px; }
+  .gauge-limit { font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+
+  /* Alerts */
+  .alert-item {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .alert-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+  }
+
+  .alert-item.high::before { background: var(--red); }
+  .alert-item.medium::before { background: var(--amber); }
+  .alert-item.low::before { background: var(--blue-bright); }
+
+  .alert-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  .alert-item.high .alert-icon { background: rgba(239,68,68,0.15); }
+  .alert-item.medium .alert-icon { background: rgba(245,158,11,0.15); }
+  .alert-item.low .alert-icon { background: rgba(46,128,255,0.15); }
+
+  .alert-body { flex: 1; }
+  .alert-title { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .alert-desc { font-size: 10px; color: var(--text-secondary); line-height: 1.4; }
+
+  .risk-badge {
+    font-size: 8px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  .risk-badge.high { background: rgba(239,68,68,0.2); color: var(--red); }
+  .risk-badge.medium { background: rgba(245,158,11,0.2); color: var(--amber); }
+  .risk-badge.low { background: rgba(46,128,255,0.2); color: var(--blue-bright); }
+
+  /* Checklist */
+  .check-item {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 11px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .check-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .check-item.done .check-box {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+
+  .check-item.pending .check-box {
+    border-color: var(--amber);
+  }
+
+  .check-item.issue .check-box {
+    border-color: var(--red);
+  }
+
+  .check-label { font-size: 12px; font-weight: 500; }
+  .check-item.done .check-label { color: var(--text-secondary); text-decoration: line-through; }
+
+  .check-status {
+    margin-left: auto;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .check-item.done .check-status { color: var(--green); }
+  .check-item.pending .check-status { color: var(--amber); }
+  .check-item.issue .check-status { color: var(--red); }
+
+  /* Audit button */
+  .audit-btn {
+    background: linear-gradient(135deg, #1a3050, #0d2040);
+    border: 1px solid rgba(46,128,255,0.3);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .audit-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(46,128,255,0.05), rgba(10,191,163,0.05));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .audit-btn:hover::after { opacity: 1; }
+
+  .audit-icon {
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .audit-text .audit-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .audit-text .audit-sub { font-size: 10px; color: var(--text-secondary); }
+
+  .audit-arrow { margin-left: auto; font-size: 16px; color: var(--blue-bright); }
+
+  /* Simulator */
+  .simulator-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+
+  .sim-title { font-size: 13px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+
+  .input-group { margin-bottom: 12px; }
+  .input-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-secondary); margin-bottom: 6px; }
+  
+  .input-field {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-family: var(--font);
+    color: var(--text-primary);
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .input-field:focus { border-color: var(--blue-bright); }
+
+  .seg-control {
+    display: flex;
+    background: rgba(255,255,255,0.04);
+    border-radius: 10px;
+    padding: 3px;
+    gap: 3px;
+  }
+
+  .seg-btn {
+    flex: 1;
+    padding: 7px 4px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
+  }
+
+  .seg-btn.active {
+    background: var(--blue);
+    color: white;
+  }
+
+  .sim-btn {
+    background: linear-gradient(135deg, var(--blue), #1a4a9a);
+    border: none;
+    border-radius: 12px;
+    padding: 12px;
+    width: 100%;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font);
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+
+  .sim-result {
+    background: rgba(10,191,163,0.08);
+    border: 1px solid rgba(10,191,163,0.2);
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .sim-result-title { font-size: 10px; color: var(--teal); font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 8px; }
+
+  .sim-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .sim-row:last-child { margin-bottom: 0; }
+
+  .sim-key { font-size: 10px; color: var(--text-secondary); }
+  .sim-val { font-size: 11px; font-weight: 700; font-family: var(--mono); }
+  .sim-val.before { color: var(--text-secondary); text-decoration: line-through; }
+  .sim-val.after { color: var(--teal); }
+
+  /* Assistant */
+  .assistant-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .chat-bubbles { margin-bottom: 12px; }
+
+  .bubble {
+    padding: 9px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    line-height: 1.4;
+    margin-bottom: 8px;
+    max-width: 85%;
+  }
+
+  .bubble.user {
+    background: var(--blue);
+    margin-left: auto;
+    border-bottom-right-radius: 4px;
+  }
+
+  .bubble.ai {
+    background: rgba(255,255,255,0.06);
+    border-bottom-left-radius: 4px;
+  }
+
+  .bubble.ai .ai-prefix {
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--teal);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 3px;
+  }
+
+  .chat-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .chat-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 12px;
+    font-family: var(--font);
+    color: var(--text-primary);
+    outline: none;
+  }
+
+  .chat-send {
+    width: 34px;
+    height: 34px;
+    background: var(--blue);
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Bottom nav */
+  .bottom-nav {
+    display: flex;
+    background: rgba(11,24,41,0.97);
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 10px 8px env(safe-area-inset-bottom, 20px);
+    flex-shrink: 0;
+    backdrop-filter: blur(20px);
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 6px 4px;
+    border-radius: 12px;
+    transition: all 0.2s;
+  }
+
+  .nav-icon { font-size: 18px; transition: transform 0.2s; }
+  .nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; color: var(--text-muted); transition: color 0.2s; }
+  .nav-item.active .nav-label { color: var(--blue-bright); }
+  .nav-item.active .nav-icon { transform: scale(1.1); }
+  .nav-active-dot {
+    width: 4px; height: 4px;
+    background: var(--blue-bright);
+    border-radius: 50%;
+  }
+
+  /* Tabs (content switcher) */
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* Animations */
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .kpi-card, .alert-item, .check-item, .gauge-card, .progress-section {
+    animation: fadeSlide 0.4s ease forwards;
+  }
+
+  /* Scanning effect for audit */
+  @keyframes scan {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(500%); }
+  }
+
+  .scanning-line {
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+    animation: scan 2s linear infinite;
+    display: none;
+  }
+
+  .audit-btn.scanning .scanning-line { display: block; }
+  .audit-btn.scanning { border-color: var(--teal); }
+
+  /* Gradient mini bar */
+  .mini-stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .mini-stat {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .mini-stat-val { font-size: 14px; font-weight: 700; font-family: var(--mono); }
+  .mini-stat-label { font-size: 8px; color: var(--text-secondary); margin-top: 2px; font-weight: 500; letter-spacing: 0.3px; }
+
+  /* Education/health bars */
+  .const-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .const-card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 12px;
+  }
+
+  .const-icon { font-size: 18px; margin-bottom: 6px; }
+  .const-title { font-size: 9px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; }
+  .const-pct { font-size: 22px; font-weight: 700; font-family: var(--mono); }
+  .const-min { font-size: 9px; color: var(--text-secondary); margin-top: 2px; }
+  .const-track {
+    margin-top: 8px;
+    height: 4px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .const-fill { height: 100%; border-radius: 2px; }
+
+  /* Chart bar */
+  .chart-container {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .chart-title { font-size: 11px; font-weight: 600; }
+
+  .chart-legend {
+    display: flex;
+    gap: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    color: var(--text-secondary);
+  }
+
+  .legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 80px;
+    padding: 0 4px;
+  }
+
+  .bar-group {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+  }
+
+  .bar {
+    flex: 1;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+  }
+
+  .bar-labels {
+    display: flex;
+    gap: 6px;
+    margin-top: 6px;
+    padding: 0 4px;
+  }
+
+  .bar-label-group {
+    flex: 1;
+    text-align: center;
+    font-size: 8px;
+    color: var(--text-muted);
+  }
+
+
+  /* GND Grid */
+  .gnd-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 7px;
+    margin-top: 2px;
+  }
+
+  .gnd-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 8px 7px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .gnd-btn.active {
+    background: rgba(46,128,255,0.12);
+    border-color: rgba(46,128,255,0.4);
+  }
+
+  .gnd-num {
+    font-size: 9px;
+    font-weight: 700;
+    font-family: var(--mono);
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+    letter-spacing: 0.3px;
+  }
+
+  .gnd-btn.active .gnd-num { color: var(--blue-bright); }
+
+  .gnd-name {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+
+  .gnd-tag {
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .gnd-tag-red    { background: rgba(239,68,68,0.15);   color: var(--red); }
+  .gnd-tag-amber  { background: rgba(245,158,11,0.15);  color: var(--amber); }
+  .gnd-tag-blue   { background: rgba(46,128,255,0.15);  color: var(--blue-bright); }
+  .gnd-tag-teal   { background: rgba(10,191,163,0.15);  color: var(--teal); }
+
+  .gnd-desc {
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border-left: 2px solid var(--blue-bright);
+    display: none;
+  }
+
+  .gnd-desc.visible { display: block; }
+
+  /* Debt block */
+  #debtBlock, #regraouroBlock { }
+
+</style>
+</head>
+<body>
+<div class="phone-wrapper">
+  <div class="phone-frame">
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <span>09:41</span>
+      <div class="status-icons">
+        <span>⚡</span>
+        <span>WiFi</span>
+        <span>🔋</span>
+      </div>
+    </div>
+
+    <!-- App Header -->
+    <div class="app-header">
+      <div class="logo-mark">
+        <div class="logo-icon">📡</div>
+        <div class="logo-text">
+          <span class="logo-name">Radar Siafic</span>
+          <span class="logo-sub">Inteligência Fiscal</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="icon-btn alert-badge">🔔</div>
+        <div class="icon-btn">⚙️</div>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="scroll-content">
+
+      <!-- TAB: DASHBOARD -->
+      <div class="tab-pane active" id="tab-dashboard">
+
+        <!-- Municipality -->
+        <div class="muni-chip">
+          <div class="muni-info">
+            <span class="muni-name">Prefeitura de São Miguel</span>
+            <span class="muni-meta">Exercício 2024 · Competência: Outubro</span>
+          </div>
+          <div class="muni-status">
+            <div class="live-dot"></div>
+            Ao Vivo
+          </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="section-header">
+          <span class="section-title">Execução Orçamentária</span>
+          <span class="section-action">Ver tudo</span>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card green" style="animation-delay:0.05s">
+            <div class="kpi-label">Receita Arrecadada</div>
+            <div class="kpi-value">R$ 4,2M</div>
+            <div class="kpi-sub">78,3% da previsão <span class="kpi-trend up">+3,1%</span></div>
+          </div>
+          <div class="kpi-card amber" style="animation-delay:0.1s">
+            <div class="kpi-label">Desp. Empenhada</div>
+            <div class="kpi-value">R$ 3,8M</div>
+            <div class="kpi-sub">72,1% do dotado <span class="kpi-trend neutral">▶</span></div>
+          </div>
+          <div class="kpi-card blue" style="animation-delay:0.15s">
+            <div class="kpi-label">Desp. Liquidada</div>
+            <div class="kpi-value">R$ 3,1M</div>
+            <div class="kpi-sub">81,6% do emp. <span class="kpi-trend up">OK</span></div>
+          </div>
+          <div class="kpi-card green" style="animation-delay:0.2s">
+            <div class="kpi-label">Desp. Paga</div>
+            <div class="kpi-value">R$ 2,9M</div>
+            <div class="kpi-sub">93,5% do liq. <span class="kpi-trend up">+1,2%</span></div>
+          </div>
+        </div>
+
+        <!-- Result -->
+        <div class="result-card">
+          <div>
+            <div class="result-label">Resultado Orçamentário</div>
+            <div class="result-value">+ R$ 412K</div>
+          </div>
+          <div class="result-badge">SUPERÁVIT</div>
+        </div>
+
+        <!-- Mini stats -->
+        <div class="mini-stat-row">
+          <div class="mini-stat">
+            <div class="mini-stat-val" style="color:var(--amber)">R$ 840K</div>
+            <div class="mini-stat-label">Restos a Pagar</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val" style="color:var(--green)">R$ 1,3M</div>
+            <div class="mini-stat-label">Saldo Financeiro</div>
+          </div>
+          <div class="mini-stat">
+            <div class="mini-stat-val" style="color:var(--green)">R$ 1,1M</div>
+            <div class="mini-stat-label">Disp. Financeiro</div>
+          </div>
+        </div>
+
+        <!-- Execution bars -->
+        <div class="section-header">
+          <span class="section-title">Execução por Categoria</span>
+        </div>
+
+        <div class="progress-section" style="animation-delay:0.25s">
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-label">Pessoal e Encargos</span>
+              <span class="progress-pct" style="color:var(--amber)">51,8%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:51.8%;background:linear-gradient(90deg,#1E5CB3,#F59E0B)"></div>
+              <div class="limit-marker" style="left:54%"></div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-label">Custeio</span>
+              <span class="progress-pct" style="color:var(--green)">62,3%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:62.3%;background:linear-gradient(90deg,#1E5CB3,#10B981)"></div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-label">Investimentos</span>
+              <span class="progress-pct" style="color:var(--blue-bright)">38,5%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:38.5%;background:linear-gradient(90deg,#1E5CB3,#2E80FF)"></div>
+            </div>
+          </div>
+          <div class="progress-item" style="margin-bottom:0">
+            <div class="progress-header">
+              <span class="progress-label">Transferências</span>
+              <span class="progress-pct" style="color:var(--red)">94,1%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:94.1%;background:linear-gradient(90deg,#1E5CB3,#EF4444)"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <span class="chart-title">Receita × Despesa (6 meses)</span>
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:var(--teal)"></div>Receita</div>
+              <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div>Despesa</div>
+            </div>
+          </div>
+          <div class="bar-chart">
+            <div class="bar-group"><div class="bar" style="height:55px;background:var(--teal);opacity:0.7"></div><div class="bar" style="height:48px;background:var(--blue);opacity:0.7"></div></div>
+            <div class="bar-group"><div class="bar" style="height:62px;background:var(--teal);opacity:0.7"></div><div class="bar" style="height:58px;background:var(--blue);opacity:0.7"></div></div>
+            <div class="bar-group"><div class="bar" style="height:50px;background:var(--teal);opacity:0.7"></div><div class="bar" style="height:60px;background:var(--blue);opacity:0.8"></div></div>
+            <div class="bar-group"><div class="bar" style="height:68px;background:var(--teal);opacity:0.7"></div><div class="bar" style="height:55px;background:var(--blue);opacity:0.7"></div></div>
+            <div class="bar-group"><div class="bar" style="height:72px;background:var(--teal);opacity:0.7"></div><div class="bar" style="height:62px;background:var(--blue);opacity:0.7"></div></div>
+            <div class="bar-group"><div class="bar" style="height:80px;background:var(--teal)"></div><div class="bar" style="height:70px;background:var(--blue)"></div></div>
+          </div>
+          <div class="bar-labels">
+            <div class="bar-label-group">Mai</div>
+            <div class="bar-label-group">Jun</div>
+            <div class="bar-label-group">Jul</div>
+            <div class="bar-label-group">Ago</div>
+            <div class="bar-label-group">Set</div>
+            <div class="bar-label-group">Out</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB: LRF/CONSTITUTIONAL -->
+      <div class="tab-pane" id="tab-lrf">
+
+        <!-- LRF Gauge -->
+        <div class="section-header" style="margin-top:4px">
+          <span class="section-title">Lei de Responsabilidade Fiscal</span>
+        </div>
+
+        <div class="gauge-card">
+          <div class="gauge-wrap">
+            <svg class="gauge" viewBox="0 0 90 56">
+              <defs>
+                <linearGradient id="ggrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#10B981"/>
+                  <stop offset="60%" stop-color="#F59E0B"/>
+                  <stop offset="100%" stop-color="#EF4444"/>
+                </linearGradient>
+              </defs>
+              <!-- Track -->
+              <path d="M10,46 A35,35 0 0,1 80,46" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" stroke-linecap="round"/>
+              <!-- Fill (~51.8/54 = 95.9%) -->
+              <path d="M10,46 A35,35 0 0,1 80,46" fill="none" stroke="url(#ggrad)" stroke-width="8" stroke-linecap="round" stroke-dasharray="110 110" stroke-dashoffset="4.4"/>
+              <!-- Needle -->
+              <line x1="45" y1="46" x2="14" y2="22" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" transform="rotate(155,45,46)"/>
+              <circle cx="45" cy="46" r="3" fill="#F59E0B"/>
+              <!-- Labels -->
+              <text x="7" y="56" fill="#4A6580" font-size="7" font-family="DM Mono">0%</text>
+              <text x="74" y="56" fill="#4A6580" font-size="7" font-family="DM Mono">54%</text>
+            </svg>
+          </div>
+          <div class="gauge-info">
+            <div class="gauge-title">Despesa com Pessoal</div>
+            <div class="gauge-value" style="color:var(--amber)">51,8%</div>
+            <div class="gauge-sub">⚠️ Próximo do limite prudencial (51,3%)</div>
+            <div class="gauge-limit">Limite máximo: 54% | Legislativo: 6%</div>
+          </div>
+        </div>
+
+        <!-- LRF Detail -->
+        <div class="progress-section">
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-label">Limite de Alerta (48,6%)</span>
+              <span class="progress-pct" style="color:var(--green)">✓ OK</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:100%;background:var(--green);opacity:0.4"></div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-header">
+              <span class="progress-label">Limite Prudencial (51,3%)</span>
+              <span class="progress-pct" style="color:var(--amber)">⚠ 101%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:101%;background:var(--amber)"></div>
+            </div>
+          </div>
+          <div class="progress-item" style="margin-bottom:0">
+            <div class="progress-header">
+              <span class="progress-label">Limite Máximo (54%)</span>
+              <span class="progress-pct" style="color:var(--green)">95,9%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" style="width:95.9%;background:linear-gradient(90deg,var(--green),var(--amber))"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Constitutional -->
+        <div class="section-header">
+          <span class="section-title">Mínimos Constitucionais</span>
+        </div>
+
+        <div class="const-row">
+          <div class="const-card">
+            <div class="const-icon">📚</div>
+            <div class="const-title">Educação</div>
+            <div class="const-pct" style="color:var(--green)">27,4%</div>
+            <div class="const-min">Mínimo: 25%</div>
+            <div class="const-track">
+              <div class="const-fill" style="width:100%;background:var(--green)"></div>
+            </div>
+          </div>
+          <div class="const-card">
+            <div class="const-icon">🏥</div>
+            <div class="const-title">Saúde</div>
+            <div class="const-pct" style="color:var(--amber)">13,8%</div>
+            <div class="const-min">Mínimo: 15%</div>
+            <div class="const-track">
+              <div class="const-fill" style="width:92%;background:var(--amber)"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Health alert -->
+        <div class="alert-item high" style="margin-bottom:10px">
+          <div class="alert-icon">⚠️</div>
+          <div class="alert-body">
+            <div class="alert-title">Risco Saúde — R$ 142K em aberto</div>
+            <div class="alert-desc">Faltam R$ 142.000 para atingir o mínimo de 15% em Saúde. Restam 2 meses do exercício.</div>
+          </div>
+          <span class="risk-badge high">Alto</span>
+        </div>
+
+      </div>
+
+      <!-- TAB: ALERTS / AUDIT -->
+      <div class="tab-pane" id="tab-alerts">
+
+        <!-- Audit Button -->
+        <div style="margin-top:4px">
+          <div class="audit-btn" id="auditBtn" onclick="runAudit()">
+            <div class="scanning-line"></div>
+            <div class="audit-icon">🔍</div>
+            <div class="audit-text">
+              <div class="audit-title">Executar Auditoria Preventiva</div>
+              <div class="audit-sub">Verificação completa de inconsistências</div>
+            </div>
+            <div class="audit-arrow">›</div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <span class="section-title">Alertas Ativos</span>
+          <span class="section-action">3 alertas</span>
+        </div>
+
+        <div class="alert-item high">
+          <div class="alert-icon">🔴</div>
+          <div class="alert-body">
+            <div class="alert-title">Fonte 150 — Saldo Insuficiente</div>
+            <div class="alert-desc">Saldo disponível insuficiente para novos empenhos nesta fonte. O sistema bloqueará qualquer tentativa de empenho até recomposição do saldo.</div>
+          </div>
+          <span class="risk-badge high">Alto</span>
+        </div>
+
+        <div class="alert-item medium">
+          <div class="alert-icon">🟡</div>
+          <div class="alert-body">
+            <div class="alert-title">Dotação 2031 — 94% Comprometida</div>
+            <div class="alert-desc">R$ 18.200 disponíveis. Ação de Custeio com alto índice de comprometimento.</div>
+          </div>
+          <span class="risk-badge medium">Médio</span>
+        </div>
+
+        <div class="alert-item medium">
+          <div class="alert-icon">📋</div>
+          <div class="alert-body">
+            <div class="alert-title">Contrato 47/2024 — Vence em 12 dias</div>
+            <div class="alert-desc">Contrato de manutenção predial. Necessária renovação ou nova licitação.</div>
+          </div>
+          <span class="risk-badge medium">Médio</span>
+        </div>
+
+        <div class="alert-item low">
+          <div class="alert-icon">📊</div>
+          <div class="alert-body">
+            <div class="alert-title">Restos a Pagar cresceu 8,3%</div>
+            <div class="alert-desc">Crescimento acima da média histórica (4,2%). Monitorar nos próximos 30 dias.</div>
+          </div>
+          <span class="risk-badge low">Baixo</span>
+        </div>
+
+        <!-- Checklist -->
+        <div class="section-header" style="margin-top:4px">
+          <span class="section-title">Fechamento Mensal — Out/2024</span>
+          <span class="section-action">5/8 ✓</span>
+        </div>
+
+        <div class="check-item done"><div class="check-box">✓</div><span class="check-label">Conciliação bancária</span><span class="check-status">Concluído</span></div>
+        <div class="check-item done"><div class="check-box">✓</div><span class="check-label">Receita fechada</span><span class="check-status">Concluído</span></div>
+        <div class="check-item done"><div class="check-box">✓</div><span class="check-label">Empenhos conferidos</span><span class="check-status">Concluído</span></div>
+        <div class="check-item pending"><div class="check-box"></div><span class="check-label">RP processado</span><span class="check-status">Pendente</span></div>
+        <div class="check-item pending"><div class="check-box"></div><span class="check-label">Saldo insuf. Fonte 150 — empenho bloqueado</span><span class="check-status">Pendente</span></div>
+        <div class="check-item done"><div class="check-box">✓</div><span class="check-label">SIOPS enviado</span><span class="check-status">Concluído</span></div>
+        <div class="check-item pending"><div class="check-box"></div><span class="check-label">SIOPE enviado</span><span class="check-status">Pendente</span></div>
+        <div class="check-item done"><div class="check-box">✓</div><span class="check-label">Inconsistências contábeis</span><span class="check-status">Nenhuma</span></div>
+
+      </div>
+
+      <!-- TAB: SIMULATOR + ASSISTANT -->
+      <div class="tab-pane" id="tab-tools">
+
+        <div class="section-header" style="margin-top:4px">
+          <span class="section-title">Simulador de Impacto Fiscal</span>
+        </div>
+
+        <!-- Base parameters (editable, simulate real API values) -->
+        <div class="simulator-card" id="simParamsCard">
+          <div class="sim-title" style="cursor:pointer;user-select:none" onclick="toggleParams()">
+            ⚙️ Parâmetros da Base
+            <span id="paramToggleIcon" style="margin-left:auto;font-size:11px;color:var(--text-secondary);font-weight:400">▼ editar</span>
+          </div>
+          <div id="simParams" style="display:none">
+            <div style="font-size:9px;color:var(--text-muted);margin-bottom:10px;line-height:1.5">
+              Em produção, esses valores são carregados automaticamente via API. Aqui você pode ajustá-los para simulação.
+            </div>
+            <div class="input-group">
+              <div class="input-label">RCL — Receita Corrente Líquida (12m)</div>
+              <input class="input-field" type="number" id="pRCL" value="7840000" step="10000">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Despesa com Pessoal Atual (acumulada)</div>
+              <input class="input-field" type="number" id="pPessoalAtual" value="4061120" step="10000">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Dotação Total da Categoria (empenhar)</div>
+              <input class="input-field" type="number" id="pDotacaoTotal" value="5200000" step="10000">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Dotação Já Empenhada (categoria)</div>
+              <input class="input-field" type="number" id="pDotacaoEmpenhada" value="3748000" step="10000">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Receita Arrecadada (mês atual)</div>
+              <input class="input-field" type="number" id="pReceita" value="4200000" step="10000">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Total Despesa Empenhada (mês atual)</div>
+              <input class="input-field" type="number" id="pDespesaTotal" value="3788000" step="10000">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Dívida Consolidada Atual</div>
+              <input class="input-field" type="number" id="pDivida" value="2100000" step="10000">
+            </div>
+            <div class="input-group">
+              <div class="input-label">Operações de Crédito (acumulado ano)</div>
+              <input class="input-field" type="number" id="pOpCredito" value="420000" step="10000">
+            </div>
+            <div class="input-group" style="margin-bottom:0">
+              <div class="input-label">Despesas de Capital Já Empenhadas</div>
+              <input class="input-field" type="number" id="pDespCap" value="680000" step="10000">
+            </div>
+          </div>
+        </div>
+
+        <div class="simulator-card">
+          <div class="sim-title">📊 Simular Novo Empenho</div>
+
+          <div class="input-group">
+            <div class="input-label">Valor do Empenho (R$)</div>
+            <input class="input-field" type="number" id="simValue" placeholder="0,00" value="150000" min="0" step="1000" oninput="clearSimResult()">
+          </div>
+
+          <div class="input-group">
+            <div class="input-label">Grupo de Natureza da Despesa (GND)</div>
+            <div class="gnd-grid" id="gndGrid">
+              <div class="gnd-btn active" onclick="setGND(this,'1')" data-gnd="1">
+                <div class="gnd-num">GND 1</div>
+                <div class="gnd-name">Pessoal e Encargos</div>
+                <div class="gnd-tag gnd-tag-red">Impacta LRF</div>
+              </div>
+              <div class="gnd-btn" onclick="setGND(this,'2')" data-gnd="2">
+                <div class="gnd-num">GND 2</div>
+                <div class="gnd-name">Juros e Enc. Dívida</div>
+                <div class="gnd-tag gnd-tag-amber">Impacta Dívida</div>
+              </div>
+              <div class="gnd-btn" onclick="setGND(this,'3')" data-gnd="3">
+                <div class="gnd-num">GND 3</div>
+                <div class="gnd-name">Outras Desp. Correntes</div>
+                <div class="gnd-tag gnd-tag-blue">Custeio Geral</div>
+              </div>
+              <div class="gnd-btn" onclick="setGND(this,'4')" data-gnd="4">
+                <div class="gnd-num">GND 4</div>
+                <div class="gnd-name">Investimentos</div>
+                <div class="gnd-tag gnd-tag-teal">Regra de Ouro</div>
+              </div>
+              <div class="gnd-btn" onclick="setGND(this,'5')" data-gnd="5">
+                <div class="gnd-num">GND 5</div>
+                <div class="gnd-name">Inversões Financeiras</div>
+                <div class="gnd-tag gnd-tag-teal">Regra de Ouro</div>
+              </div>
+              <div class="gnd-btn" onclick="setGND(this,'6')" data-gnd="6">
+                <div class="gnd-num">GND 6</div>
+                <div class="gnd-name">Amortiz. da Dívida</div>
+                <div class="gnd-tag gnd-tag-amber">Impacta Dívida</div>
+              </div>
+            </div>
+            <div id="gndDesc" class="gnd-desc"></div>
+          </div>
+
+          <div id="simError" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:10px;font-size:11px;color:var(--red);margin-bottom:10px;"></div>
+
+          <button class="sim-btn" onclick="runSim()">▶ Simular Impacto</button>
+
+          <div class="sim-result" id="simResult" style="display:none">
+            <div class="sim-result-title" id="simResultTitle">📈 Resultado da Simulação</div>
+
+            <!-- LRF block — only shown for Pessoal -->
+            <div id="lrfBlock">
+              <div style="font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin:8px 0 6px">Lei de Responsabilidade Fiscal</div>
+              <div class="sim-row">
+                <span class="sim-key">Pessoal / RCL — Antes</span>
+                <span class="sim-val" id="rLrfAntes" style="color:var(--text-secondary)"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Pessoal / RCL — Depois</span>
+                <span class="sim-val" id="rLrfDepois"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Variação</span>
+                <span class="sim-val" id="rLrfVar"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Margem até Limite Máximo</span>
+                <span class="sim-val" id="rLrfMargem"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Margem até Lim. Prudencial</span>
+                <span class="sim-val" id="rLrfPrudencial"></span>
+              </div>
+            </div>
+
+            <!-- Dívida block — GND 2 e 6 -->
+            <div id="debtBlock" style="display:none">
+              <div style="font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin:8px 0 6px">Impacto na Dívida</div>
+              <div class="sim-row">
+                <span class="sim-key">Dívida Consolidada Antes</span>
+                <span class="sim-val" id="rDebtAntes" style="color:var(--text-secondary)"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Dívida Consolidada Depois</span>
+                <span class="sim-val" id="rDebtDepois"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">% da RCL — Antes</span>
+                <span class="sim-val" id="rDebtPctAntes" style="color:var(--text-secondary)"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">% da RCL — Depois</span>
+                <span class="sim-val" id="rDebtPctDepois"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Limite LRF (120% RCL)</span>
+                <span class="sim-val" id="rDebtMargem"></span>
+              </div>
+            </div>
+
+            <!-- Regra de Ouro block — GND 4 e 5 -->
+            <div id="regraouroBlock" style="display:none">
+              <div style="font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin:8px 0 6px">Regra de Ouro (art. 167, III CF)</div>
+              <div class="sim-row">
+                <span class="sim-key">Op. de Crédito (acumulado)</span>
+                <span class="sim-val" id="rOuroCredito" style="color:var(--text-secondary)"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Desp. Capital Antes</span>
+                <span class="sim-val" id="rOuroCapAntes" style="color:var(--text-secondary)"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Desp. Capital Depois</span>
+                <span class="sim-val" id="rOuroCapDepois"></span>
+              </div>
+              <div class="sim-row">
+                <span class="sim-key">Margem Regra de Ouro</span>
+                <span class="sim-val" id="rOuroMargem"></span>
+              </div>
+            </div>
+
+            <!-- Orçamento block -->
+            <div style="font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin:10px 0 6px">Execução Orçamentária</div>
+            <div class="sim-row">
+              <span class="sim-key">% Dotação Antes</span>
+              <span class="sim-val" id="rOrcAntes" style="color:var(--text-secondary)"></span>
+            </div>
+            <div class="sim-row">
+              <span class="sim-key">% Dotação Depois</span>
+              <span class="sim-val" id="rOrcDepois"></span>
+            </div>
+            <div class="sim-row">
+              <span class="sim-key">Saldo Disponível Antes</span>
+              <span class="sim-val" id="rSaldoAntes" style="color:var(--text-secondary)"></span>
+            </div>
+            <div class="sim-row">
+              <span class="sim-key">Saldo Disponível Depois</span>
+              <span class="sim-val" id="rSaldoDepois"></span>
+            </div>
+
+            <!-- Resultado fiscal block -->
+            <div style="font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-muted);margin:10px 0 6px">Resultado Fiscal</div>
+            <div class="sim-row">
+              <span class="sim-key">Resultado Antes</span>
+              <span class="sim-val" id="rFiscalAntes" style="color:var(--text-secondary)"></span>
+            </div>
+            <div class="sim-row">
+              <span class="sim-key">Resultado Depois</span>
+              <span class="sim-val" id="rFiscalDepois"></span>
+            </div>
+
+            <!-- Status geral -->
+            <div style="margin-top:12px;padding:10px;border-radius:10px;text-align:center" id="rStatusBox">
+              <div style="font-size:11px;font-weight:700" id="rStatusText"></div>
+              <div style="font-size:10px;margin-top:3px;opacity:0.8" id="rStatusSub"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Assistant -->
+        <div class="section-header">
+          <span class="section-title">Assistente Contábil</span>
+          <span class="section-action">IA Integrada</span>
+        </div>
+
+        <div class="assistant-card">
+          <div class="chat-bubbles">
+            <div class="bubble user">Quanto falta para atingir o mínimo da saúde?</div>
+            <div class="bubble ai">
+              <div class="ai-prefix">🤖 Radar Siafic IA</div>
+              Faltam <strong>R$ 142.000</strong> para atingir os 15% mínimos em Saúde. Até outubro foram aplicados <strong>R$ 1.082.400</strong> (13,8%). Você precisará empenhar mais <strong>R$ 71.000/mês</strong> nos 2 meses restantes para atingir o mínimo.
+            </div>
+            <div class="bubble user">Qual a dotação mais comprometida?</div>
+            <div class="bubble ai">
+              <div class="ai-prefix">🤖 Radar Siafic IA</div>
+              A <strong>Dotação 2031</strong> — Manutenção de Serviços Gerais está com <strong>94,1%</strong> comprometida. Saldo disponível de R$ 18.200. Recomendo monitoramento diário.
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <input class="chat-input" placeholder="Pergunte ao assistente..." id="chatInput">
+            <button class="chat-send" onclick="sendChat()">➤</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+      <div class="nav-item active" onclick="switchTab('dashboard', this)">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Dashboard</span>
+        <div class="nav-active-dot" id="dot-dashboard"></div>
+      </div>
+      <div class="nav-item" onclick="switchTab('lrf', this)">
+        <span class="nav-icon">⚖️</span>
+        <span class="nav-label">LRF</span>
+        <div class="nav-active-dot" id="dot-lrf" style="display:none"></div>
+      </div>
+      <div class="nav-item" onclick="switchTab('alerts', this)">
+        <span class="nav-icon">🔔</span>
+        <span class="nav-label">Alertas</span>
+        <div class="nav-active-dot" id="dot-alerts" style="display:none"></div>
+      </div>
+      <div class="nav-item" onclick="switchTab('tools', this)">
+        <span class="nav-icon">🧮</span>
+        <span class="nav-label">Ferramentas</span>
+        <div class="nav-active-dot" id="dot-tools" style="display:none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(name, el) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('[id^="dot-"]').forEach(d => d.style.display = 'none');
+  document.getElementById('tab-' + name).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('dot-' + name).style.display = 'block';
+  document.querySelector('.scroll-content').scrollTop = 0;
+}
+
+// ─── LRF & legal limits ──────────────────────────────────────
+const LRF_MAX        = 0.54;    // Limite máximo Executivo
+const LRF_PRUDENCIAL = 0.513;   // 95% de 54%
+const LRF_ALERTA     = 0.486;   // 90% de 54%
+const LRF_DIVIDA_MAX = 1.20;    // Limite dívida consolidada: 120% RCL (Res. SF 40/2001)
+
+// GND metadata
+const GND_INFO = {
+  '1': {
+    label: 'Pessoal e Encargos Sociais',
+    desc: 'Vencimentos, salários, obrigações patronais. Único GND que compõe o cálculo do limite de pessoal da LRF (art. 19/20).',
+    impactoLRF: true, impactoDivida: false, impactoCapital: false
+  },
+  '2': {
+    label: 'Juros e Encargos da Dívida',
+    desc: 'Juros, taxas e comissões de operações de crédito. Compõe o serviço da dívida junto com o GND 6.',
+    impactoLRF: false, impactoDivida: true, impactoCapital: false
+  },
+  '3': {
+    label: 'Outras Despesas Correntes',
+    desc: 'Diárias, material de consumo, serviços de terceiros, transferências correntes. Sem impacto direto em limites específicos da LRF.',
+    impactoLRF: false, impactoDivida: false, impactoCapital: false
+  },
+  '4': {
+    label: 'Investimentos',
+    desc: 'Obras e instalações, equipamentos, material permanente. Compõe despesas de capital — relevante para a Regra de Ouro (art. 167, III CF).',
+    impactoLRF: false, impactoDivida: false, impactoCapital: true
+  },
+  '5': {
+    label: 'Inversões Financeiras',
+    desc: 'Aquisição de imóveis, participações societárias, títulos. Compõe despesas de capital — relevante para a Regra de Ouro.',
+    impactoLRF: false, impactoDivida: false, impactoCapital: true
+  },
+  '6': {
+    label: 'Amortização da Dívida',
+    desc: 'Pagamento do principal de dívidas contratadas. Reduz a dívida consolidada, mas exige disponibilidade financeira. Soma ao serviço da dívida com GND 2.',
+    impactoLRF: false, impactoDivida: true, impactoCapital: false
+  }
+};
+
+let currentGND = '1';
+
+function setGND(btn, gnd) {
+  document.querySelectorAll('.gnd-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentGND = gnd;
+  const desc = document.getElementById('gndDesc');
+  desc.textContent = GND_INFO[gnd].desc;
+  desc.classList.add('visible');
+  clearSimResult();
+}
+
+function clearSimResult() {
+  document.getElementById('simResult').style.display = 'none';
+  document.getElementById('simError').style.display = 'none';
+}
+
+function toggleParams() {
+  const p = document.getElementById('simParams');
+  const icon = document.getElementById('paramToggleIcon');
+  const shown = p.style.display !== 'none';
+  p.style.display = shown ? 'none' : 'block';
+  icon.textContent = shown ? '▼ editar' : '▲ fechar';
+}
+
+function fmtBRL(v) {
+  const abs = Math.abs(v);
+  let str;
+  if (abs >= 1e6)      str = 'R$ ' + (Math.abs(v)/1e6).toFixed(2).replace('.',',') + 'M';
+  else if (abs >= 1e3) str = 'R$ ' + (Math.abs(v)/1e3).toFixed(1).replace('.',',') + 'K';
+  else                 str = 'R$ ' + Math.abs(v).toFixed(0);
+  return (v < 0 ? '−' : '') + str;
+}
+
+function fmtPct(v) { return (v * 100).toFixed(2).replace('.',',') + '%'; }
+
+function colorFor(v, warnThresh, dangerThresh, invert) {
+  // invert=true: lower is better (margins — positive = good)
+  if (!invert) {
+    if (v >= dangerThresh) return 'var(--red)';
+    if (v >= warnThresh)   return 'var(--amber)';
+    return 'var(--green)';
+  } else {
+    if (v <= 0)            return 'var(--red)';
+    if (v <= dangerThresh) return 'var(--amber)';
+    return 'var(--green)';
+  }
+}
+
+function statusBox(level, text, sub) {
+  const colors = {
+    ok:      { bg:'rgba(16,185,129,0.15)',  border:'rgba(16,185,129,0.3)',  color:'var(--green)' },
+    atencao: { bg:'rgba(245,158,11,0.15)',  border:'rgba(245,158,11,0.3)',  color:'var(--amber)' },
+    risco:   { bg:'rgba(239,68,68,0.15)',   border:'rgba(239,68,68,0.3)',   color:'var(--red)'   }
+  };
+  const c = colors[level];
+  const box = document.getElementById('rStatusBox');
+  box.style.background = c.bg;
+  box.style.border = '1px solid ' + c.border;
+  document.getElementById('rStatusText').style.color = c.color;
+  document.getElementById('rStatusText').textContent = text;
+  document.getElementById('rStatusSub').style.color  = c.color;
+  document.getElementById('rStatusSub').textContent  = sub;
+}
+
+function showEl(id, show) {
+  document.getElementById(id).style.display = show ? 'block' : 'none';
+}
+
+function runSim() {
+  const errEl = document.getElementById('simError');
+  errEl.style.display = 'none';
+
+  // ── Base parameters ───────────────────────────────────────
+  const RCL           = parseFloat(document.getElementById('pRCL').value)             || 0;
+  const pessoalAtual  = parseFloat(document.getElementById('pPessoalAtual').value)    || 0;
+  const dotacaoTotal  = parseFloat(document.getElementById('pDotacaoTotal').value)    || 0;
+  const dotacaoEmp    = parseFloat(document.getElementById('pDotacaoEmpenhada').value)|| 0;
+  const receita       = parseFloat(document.getElementById('pReceita').value)         || 0;
+  const despesaTotal  = parseFloat(document.getElementById('pDespesaTotal').value)    || 0;
+  const dividaAtual   = parseFloat(document.getElementById('pDivida').value)          || 0;
+  const opCredito     = parseFloat(document.getElementById('pOpCredito').value)       || 0;
+  const despCap       = parseFloat(document.getElementById('pDespCap').value)         || 0;
+
+  // ── Simulation input ──────────────────────────────────────
+  const valor = parseFloat(document.getElementById('simValue').value);
+  const gnd   = currentGND;
+  const info  = GND_INFO[gnd];
+
+  // ── Validate ──────────────────────────────────────────────
+  if (!valor || valor <= 0) { errEl.textContent = '⚠ Informe um valor válido e maior que zero.'; errEl.style.display='block'; return; }
+  if (RCL <= 0)             { errEl.textContent = '⚠ A RCL deve ser maior que zero.'; errEl.style.display='block'; return; }
+  if (dotacaoTotal <= 0)    { errEl.textContent = '⚠ A dotação total deve ser maior que zero.'; errEl.style.display='block'; return; }
+
+  const saldoAntes  = dotacaoTotal - dotacaoEmp;
+  const saldoDepois = saldoAntes - valor;
+
+  if (saldoAntes <= 0) { errEl.textContent = '⚠ Não há saldo disponível na dotação.'; errEl.style.display='block'; return; }
+  if (saldoDepois < 0) {
+    errEl.textContent = `⚠ Saldo insuficiente. Disponível: ${fmtBRL(saldoAntes)}. Excede em ${fmtBRL(-saldoDepois)}.`;
+    errEl.style.display='block'; return;
+  }
+
+  // ── Calculations ─────────────────────────────────────────
+
+  // Orçamento (always)
+  const orcAntes  = dotacaoEmp / dotacaoTotal;
+  const orcDepois = (dotacaoEmp + valor) / dotacaoTotal;
+
+  // Resultado fiscal (always)
+  const fiscalAntes  = receita - despesaTotal;
+  const fiscalDepois = receita - (despesaTotal + valor);
+
+  // LRF Pessoal (GND 1 only)
+  const lrfAntes    = pessoalAtual / RCL;
+  const pessoalNovo = gnd === '1' ? pessoalAtual + valor : pessoalAtual;
+  const lrfDepois   = pessoalNovo / RCL;
+  const lrfVar      = lrfDepois - lrfAntes;
+  const margemMax   = LRF_MAX - lrfDepois;
+  const margemPrud  = LRF_PRUDENCIAL - lrfDepois;
+
+  // Dívida (GND 2 e 6)
+  // GND 2 = juros, não altera principal da dívida. GND 6 = amortização, REDUZ dívida.
+  // Mas o empenho em si compromete o orçamento — o impacto na dívida é diferente:
+  // GND 2: aumenta serviço da dívida (juros empenhados)
+  // GND 6: empenhar amortização reduzirá a dívida quando pago, mas o comprometimento orçamentário ocorre já
+  const dividaDepois = gnd === '6' ? dividaAtual - valor : dividaAtual + (gnd === '2' ? 0 : 0);
+  // For display: GND 2 doesn't change consolidated debt principal; GND 6 will reduce it upon payment
+  const dividaDepoisDisplay = gnd === '6' ? dividaAtual - valor : dividaAtual;
+  const debtPctAntes  = dividaAtual / RCL;
+  const debtPctDepois = dividaDepoisDisplay / RCL;
+  const debtMargem    = (LRF_DIVIDA_MAX * RCL) - dividaDepoisDisplay;
+
+  // Regra de Ouro (GND 4 e 5)
+  const capDepois    = despCap + valor;
+  const regraMargem  = capDepois - opCredito; // despesas capital > op.crédito → ok
+
+  // ── Determine status ──────────────────────────────────────
+  let level, text, sub;
+
+  if (gnd === '1') {
+    if (lrfDepois > LRF_MAX) {
+      level = 'risco'; text = '🔴 EMPENHO VEDADO';
+      sub = 'Ultrapassa o limite máximo de pessoal (54% da RCL). Vedado pelo art. 22 da LC 101/2000.';
+    } else if (lrfDepois > LRF_PRUDENCIAL) {
+      level = 'atencao'; text = '⚠️ RISCO PRUDENCIAL';
+      sub = 'Ultrapassa 95% do limite (51,3% RCL). Vedada concessão de vantagens, criação de cargos e novas admissões.';
+    } else if (lrfDepois > LRF_ALERTA) {
+      level = 'atencao'; text = '⚠️ ZONA DE ALERTA';
+      sub = 'Entre 90% e 95% do limite máximo. Atenção redobrada ao controle de pessoal.';
+    } else {
+      level = 'ok'; text = '✅ DENTRO DOS LIMITES';
+      sub = 'LRF de pessoal e execução orçamentária dentro dos parâmetros legais.';
+    }
+  } else if (gnd === '2') {
+    if (orcDepois > 1) {
+      level = 'risco'; text = '🔴 EXCEDE A DOTAÇÃO'; sub = 'Sem crédito orçamentário suficiente para juros.';
+    } else {
+      level = 'ok'; text = '✅ DENTRO DOS LIMITES';
+      sub = 'GND 2 não impacta diretamente o limite de pessoal. Acompanhe o serviço total da dívida.';
+    }
+  } else if (gnd === '3') {
+    if (orcDepois > 1) {
+      level = 'risco'; text = '🔴 EXCEDE A DOTAÇÃO'; sub = 'Necessário crédito adicional antes de empenhar.';
+    } else if (orcDepois > 0.9) {
+      level = 'atencao'; text = '⚠️ DOTAÇÃO QUASE ESGOTADA';
+      sub = 'Menos de 10% de saldo disponível após o empenho. Solicite crédito suplementar se necessário.';
+    } else {
+      level = 'ok'; text = '✅ DENTRO DOS LIMITES';
+      sub = 'GND 3 não impacta limites da LRF de pessoal, dívida ou regra de ouro.';
+    }
+  } else if (gnd === '4' || gnd === '5') {
+    if (orcDepois > 1) {
+      level = 'risco'; text = '🔴 EXCEDE A DOTAÇÃO'; sub = 'Sem crédito orçamentário para capital.';
+    } else if (regraMargem < 0) {
+      level = 'risco'; text = '🔴 VIOLA A REGRA DE OURO';
+      sub = `Operações de crédito (${fmtBRL(opCredito)}) superam despesas de capital (${fmtBRL(capDepois)}). Vedado pelo art. 167, III da CF.`;
+    } else if (regraMargem < valor * 0.2) {
+      level = 'atencao'; text = '⚠️ MARGEM APERTADA — REGRA DE OURO';
+      sub = 'Margem de segurança baixa entre op. de crédito e despesas de capital.';
+    } else {
+      level = 'ok'; text = '✅ DENTRO DOS LIMITES';
+      sub = 'Despesas de capital superiores às operações de crédito. Regra de Ouro respeitada.';
+    }
+  } else if (gnd === '6') {
+    if (orcDepois > 1) {
+      level = 'risco'; text = '🔴 EXCEDE A DOTAÇÃO'; sub = 'Sem crédito orçamentário para amortização.';
+    } else if (debtPctDepois > LRF_DIVIDA_MAX) {
+      level = 'risco'; text = '🔴 LIMITE DE DÍVIDA EXTRAPOLADO';
+      sub = 'Dívida consolidada superaria 120% da RCL após pagamento. (Resolução SF 40/2001)';
+    } else {
+      level = 'ok'; text = '✅ AMORTIZAÇÃO DENTRO DOS LIMITES';
+      sub = 'Empenho de amortização reduzirá a dívida consolidada quando liquidado/pago.';
+    }
+  }
+
+  // ── Render result ─────────────────────────────────────────
+  showEl('lrfBlock',       gnd === '1');
+  showEl('debtBlock',      gnd === '2' || gnd === '6');
+  showEl('regraouroBlock', gnd === '4' || gnd === '5');
+
+  document.getElementById('simResultTitle').textContent =
+    `📈 GND ${gnd} — ${info.label} — ${fmtBRL(valor)}`;
+
+  // LRF
+  if (gnd === '1') {
+    document.getElementById('rLrfAntes').textContent  = fmtPct(lrfAntes) + ' da RCL';
+    const dep = document.getElementById('rLrfDepois');
+    dep.textContent = fmtPct(lrfDepois) + ' da RCL';
+    dep.style.color = colorFor(lrfDepois, LRF_ALERTA, LRF_PRUDENCIAL, false);
+    const varEl = document.getElementById('rLrfVar');
+    varEl.textContent = '+' + fmtPct(lrfVar);
+    varEl.style.color = lrfVar > 0.01 ? 'var(--red)' : 'var(--amber)';
+    const mMax = document.getElementById('rLrfMargem');
+    mMax.textContent = fmtPct(margemMax) + ' (' + fmtBRL(margemMax * RCL) + ')';
+    mMax.style.color = colorFor(margemMax, 0.05, 0.02, true);
+    const mPrud = document.getElementById('rLrfPrudencial');
+    mPrud.textContent = margemPrud >= 0
+      ? fmtPct(margemPrud) + ' (' + fmtBRL(margemPrud * RCL) + ')'
+      : '⛔ Ultrapassado em ' + fmtPct(-margemPrud);
+    mPrud.style.color = margemPrud < 0 ? 'var(--red)' : colorFor(margemPrud, 0.03, 0.01, true);
+  }
+
+  // Dívida
+  if (gnd === '2' || gnd === '6') {
+    document.getElementById('rDebtAntes').textContent    = fmtBRL(dividaAtual);
+    const depDiv = document.getElementById('rDebtDepois');
+    depDiv.textContent = fmtBRL(dividaDepoisDisplay) + (gnd==='6' ? ' (após pagamento)' : '');
+    depDiv.style.color = gnd === '6' ? 'var(--green)' : 'var(--text-secondary)';
+    document.getElementById('rDebtPctAntes').textContent = fmtPct(debtPctAntes) + ' da RCL';
+    const pctDep = document.getElementById('rDebtPctDepois');
+    pctDep.textContent = fmtPct(debtPctDepois) + ' da RCL';
+    pctDep.style.color = colorFor(debtPctDepois, 1.0, 1.1, false);
+    const mDiv = document.getElementById('rDebtMargem');
+    mDiv.textContent = fmtBRL(debtMargem) + ' (' + fmtPct(debtMargem / RCL) + ')';
+    mDiv.style.color = colorFor(debtMargem, RCL * 0.2, RCL * 0.05, true);
+  }
+
+  // Regra de Ouro
+  if (gnd === '4' || gnd === '5') {
+    document.getElementById('rOuroCredito').textContent  = fmtBRL(opCredito);
+    document.getElementById('rOuroCapAntes').textContent = fmtBRL(despCap);
+    const capDep = document.getElementById('rOuroCapDepois');
+    capDep.textContent = fmtBRL(capDepois);
+    capDep.style.color = capDepois >= opCredito ? 'var(--green)' : 'var(--red)';
+    const mRO = document.getElementById('rOuroMargem');
+    mRO.textContent = regraMargem >= 0
+      ? '✅ Margem de ' + fmtBRL(regraMargem)
+      : '🔴 Déficit de ' + fmtBRL(-regraMargem);
+    mRO.style.color = regraMargem >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+
+  // Orçamento (always)
+  document.getElementById('rOrcAntes').textContent  = fmtPct(orcAntes);
+  const orcDep = document.getElementById('rOrcDepois');
+  orcDep.textContent = fmtPct(orcDepois);
+  orcDep.style.color = colorFor(orcDepois, 0.85, 0.95, false);
+  document.getElementById('rSaldoAntes').textContent = fmtBRL(saldoAntes);
+  const saldoDep = document.getElementById('rSaldoDepois');
+  saldoDep.textContent = fmtBRL(saldoDepois);
+  saldoDep.style.color = saldoDepois < dotacaoTotal * 0.05 ? 'var(--amber)' : 'var(--green)';
+
+  // Resultado fiscal
+  const fAntes = document.getElementById('rFiscalAntes');
+  fAntes.textContent = (fiscalAntes >= 0 ? '+ ' : '− ') + fmtBRL(Math.abs(fiscalAntes));
+  fAntes.style.color = 'var(--text-secondary)';
+  const fDepois = document.getElementById('rFiscalDepois');
+  fDepois.textContent = (fiscalDepois >= 0 ? '+ ' : '− ') + fmtBRL(Math.abs(fiscalDepois));
+  fDepois.style.color = fiscalDepois >= 0 ? 'var(--teal)' : 'var(--red)';
+
+  statusBox(level, text, sub);
+
+  const result = document.getElementById('simResult');
+  result.style.display = 'block';
+  setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+}
+
+function runAudit() {
+  const btn = document.getElementById('auditBtn');
+  btn.classList.add('scanning');
+  btn.querySelector('.audit-sub').textContent = 'Verificando inconsistências...';
+  setTimeout(() => {
+    btn.classList.remove('scanning');
+    btn.querySelector('.audit-sub').textContent = '2 riscos encontrados — ver alertas';
+    btn.style.borderColor = 'rgba(239,68,68,0.4)';
+  }, 3000);
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const val = input.value.trim();
+  if (!val) return;
+
+  const bubbles = document.querySelector('.chat-bubbles');
+  const userBubble = document.createElement('div');
+  userBubble.className = 'bubble user';
+  userBubble.textContent = val;
+  bubbles.appendChild(userBubble);
+  input.value = '';
+
+  setTimeout(() => {
+    const aiBubble = document.createElement('div');
+    aiBubble.className = 'bubble ai';
+    aiBubble.innerHTML = '<div class="ai-prefix">🤖 Radar Siafic IA</div>Consultando dados em tempo real... Verificando o sistema contábil integrado para responder com precisão.';
+    bubbles.appendChild(aiBubble);
+    aiBubble.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 800);
+}
+</script>
+
+<!-- Android install banner -->
+<div id="installBanner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);width:min(358px, calc(100vw - 32px));background:#1A3050;border:1px solid rgba(46,128,255,0.3);border-radius:16px;padding:12px 16px;align-items:center;gap:12px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+  <div style="font-size:24px">📡</div>
+  <div style="flex:1">
+    <div style="font-size:12px;font-weight:700;color:#F0F4FF">Instalar Radar Siafic</div>
+    <div style="font-size:10px;color:#7E9AB5;margin-top:1px">Adicionar à tela inicial</div>
+  </div>
+  <button onclick="installApp()" style="background:linear-gradient(135deg,#1E5CB3,#0ABFA3);border:none;border-radius:10px;padding:8px 14px;color:white;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Instalar</button>
+  <button onclick="dismissBanner()" style="background:none;border:none;color:#7E9AB5;font-size:18px;cursor:pointer;padding:0 2px">✕</button>
+</div>
+
+<!-- iOS install banner -->
+<div id="iosBanner" style="display:none;position:fixed;bottom:90px;left:50%;transform:translateX(-50%);width:min(358px, calc(100vw - 32px));background:#1A3050;border:1px solid rgba(46,128,255,0.3);border-radius:16px;padding:14px 16px;flex-direction:column;gap:8px;z-index:1000;box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="font-size:22px">📡</div>
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#F0F4FF">Instalar no iPhone / iPad</div>
+      <div style="font-size:10px;color:#7E9AB5">Siga os passos abaixo</div>
+    </div>
+    <button onclick="document.getElementById('iosBanner').style.display='none'" style="margin-left:auto;background:none;border:none;color:#7E9AB5;font-size:18px;cursor:pointer">✕</button>
+  </div>
+  <div style="background:rgba(255,255,255,0.05);border-radius:10px;padding:10px;font-size:11px;color:#F0F4FF;line-height:1.8">
+    1️⃣ Toque em <strong>Compartilhar</strong> (ícone ⬆️ na barra do Safari)<br>
+    2️⃣ Role e toque em <strong>"Adicionar à Tela de Início"</strong><br>
+    3️⃣ Toque em <strong>Adicionar</strong> — pronto! 🎉
+  </div>
+</div>
+
+<script>
+// ── Service Worker (offline cache) ──────────────────────────
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    const CACHE = 'radar-siafic-v1';
+    const ASSETS = ['/'];
+    self.addEventListener('install', e => {
+      e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+      self.skipWaiting();
+    });
+    self.addEventListener('activate', e => {
+      e.waitUntil(caches.keys().then(keys =>
+        Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      ));
+      self.clients.claim();
+    });
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        fetch(e.request).catch(() => caches.match(e.request))
+      );
+    });
+  `;
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob))
+    .then(() => console.log('SW registered'))
+    .catch(e => console.log('SW error', e));
+}
+
+// ── Install prompt (Android) ─────────────────────────────────
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  showInstallBanner();
+});
+
+function showInstallBanner() {
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.style.display = 'flex';
+}
+
+function installApp() {
+  const banner = document.getElementById('installBanner');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(result => {
+      if (result.outcome === 'accepted') {
+        if (banner) banner.style.display = 'none';
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+
+function dismissBanner() {
+  const banner = document.getElementById('installBanner');
+  if (banner) banner.style.display = 'none';
+}
+
+// iOS detection — show manual instruction
+function isIOS() {
+  return /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+}
+
+window.addEventListener('load', () => {
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  if (isIOS() && !isStandalone) {
+    document.getElementById('iosBanner').style.display = 'flex';
+  }
+});
+</script>
+
+</body>
+</html>
